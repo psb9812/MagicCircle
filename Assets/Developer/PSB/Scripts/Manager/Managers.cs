@@ -43,6 +43,7 @@ namespace Project_SL
 
         private void Update()
         {
+            
         }
         //Managers를 초기화 해주는 함수.
         //_instance가 초기화가 되지 않았다면 @Managers를 찾고 (없다면 생성)

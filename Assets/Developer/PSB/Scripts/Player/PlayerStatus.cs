@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class PlayerStatus : MonoBehaviour
     private float _maxMp = 100.0f;
     private float _currentMp = 100.0f;
     private bool _isImmune = false;
+    private bool _isDie = false;
     private float _immuneDuration = 2.0f;
+    
 
     [SerializeField]
     private MeshRenderer _attackedScreen;
@@ -21,12 +24,15 @@ public class PlayerStatus : MonoBehaviour
     private Slider _hpSlider;
     [SerializeField]
     private Slider _mpSlider;
+    [SerializeField]
+    private GameObject _dieText;
 
     static public PlayerStatus Player { get { return _player; } }
     public float MaxPlayerHp { get { return _maxHp; } set { _maxHp = value; } }
     public float PlayerHp { get { return _currentHp; } set { _currentHp = value; } }
     public float MaxPlayerMp { get { return _maxMp; } set { _maxMp = value; } }
     public float PlayerMp { get { return _currentMp; } set { _currentMp = value; } }
+    public bool IsDie { get { return _isDie; } set { _isDie = value;} }
 
 
     private void Awake()
@@ -37,6 +43,9 @@ public class PlayerStatus : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        IsDie = false;
+        Time.timeScale = 1.0f;
     }
 
     // Start is called before the first frame update
@@ -48,7 +57,24 @@ public class PlayerStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (PlayerHp <= 0)
+        {
+            PlayerDie();
+        }
+    }
+
+    public void PlayerDie()
+    {
+        IsDie = true;
+        Time.timeScale = 0.0f;
+        _dieText.SetActive(true);
+
+        Invoke("LoadSceneInGame", 3.0f);
+    }
+
+    public void LoadSceneInGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnTriggerEnter(Collider other)
