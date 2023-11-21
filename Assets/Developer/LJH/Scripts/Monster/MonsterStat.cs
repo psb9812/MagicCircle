@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Project_SL
 {
-    public class MonsterStat : MonoBehaviour
+    [CreateAssetMenu(fileName = "New Enemy", menuName = "Enemy/Create Enemy", order = 1)]
+    public class MonsterStat : ScriptableObject
     {
         public float curHp = 100f;
         public float maxHp = 100f;
